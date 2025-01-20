@@ -1,55 +1,143 @@
-import React, { useState } from 'react';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import React, { useState, useEffect } from "react";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { db, auth } from "../App";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 
 const KanbanPage = () => {
   const [columns, setColumns] = useState({
-    todo: {
-      name: "To Do",
-      items: [],
-    },
-    inProgress: {
-      name: "In Progress",
-      items: [],
-    },
-    done: {
-      name: "Done",
-      items: [],
-    },
+    todo: { name: "To Do", items: [] },
+    inProgress: { name: "In Progress", items: [] },
+    done: { name: "Done", items: [] },
   });
-
   const [newTicket, setNewTicket] = useState("");
+  const [projectId, setProjectId] = useState(null);
+  const [userRole, setUserRole] = useState(null); // Ajout du rôle utilisateur
 
-  // Fonction pour ajouter un ticket
-  const addTicket = () => {
-    if (newTicket.trim() !== "") {
-      const newItem = { id: `${Date.now()}`, content: newTicket };
-      setColumns({
-        ...columns,
+  // Charger les informations utilisateur et les tickets
+  useEffect(() => {
+    const fetchUserAndTickets = async () => {
+      try {
+        const user = auth.currentUser;
+        if (!user) {
+          console.error("Utilisateur non connecté.");
+          return;
+        }
+
+        // Récupérer les informations de l'utilisateur
+        const userSnapshot = await getDocs(
+          query(collection(db, "users"), where("email", "==", user.email))
+        );
+
+        if (!userSnapshot.empty) {
+          const userData = userSnapshot.docs[0].data();
+          setUserRole(userData.role); // Définit le rôle de l'utilisateur
+          setProjectId(userData.projectId);
+
+          // Si l'utilisateur est un SuperAdmin, récupère tous les tickets
+          const ticketQuery =
+            userData.role === "superAdmin"
+              ? collection(db, "kanban") // Pas de filtre pour le SuperAdmin
+              : query(
+                  collection(db, "kanban"),
+                  where("projectId", "==", userData.projectId)
+                );
+
+          const ticketSnapshot = await getDocs(ticketQuery);
+
+          const loadedColumns = {
+            todo: { name: "To Do", items: [] },
+            inProgress: { name: "In Progress", items: [] },
+            done: { name: "Done", items: [] },
+          };
+
+          ticketSnapshot.forEach((doc) => {
+            const data = doc.data();
+            loadedColumns[data.status]?.items.push({
+              id: doc.id,
+              content: data.content,
+            });
+          });
+
+          setColumns(loadedColumns);
+        } else {
+          console.error("Utilisateur introuvable dans la collection Firestore 'users'.");
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement des tickets :", error);
+      }
+    };
+
+    fetchUserAndTickets();
+  }, []);
+
+  // Ajouter un ticket
+  const addTicket = async () => {
+    if (!newTicket.trim()) {
+      alert("Le ticket ne peut pas être vide.");
+      return;
+    }
+
+    if (!projectId && userRole !== "superAdmin") {
+      alert("Impossible de créer un ticket sans projectId. Vérifiez vos informations.");
+      return;
+    }
+
+    const newItem = {
+      content: newTicket,
+      status: "todo",
+      projectId: userRole === "superAdmin" ? "global" : projectId, // Ajout du `projectId` global pour les tickets SuperAdmin
+    };
+
+    try {
+      const docRef = await addDoc(collection(db, "kanban"), newItem);
+
+      setColumns((prevColumns) => ({
+        ...prevColumns,
         todo: {
-          ...columns.todo,
-          items: [...columns.todo.items, newItem],
+          ...prevColumns.todo,
+          items: [...prevColumns.todo.items, { id: docRef.id, content: newTicket }],
         },
-      });
-      setNewTicket(""); // Réinitialise l'entrée
+      }));
+
+      setNewTicket("");
+    } catch (error) {
+      console.error("Erreur lors de la création du ticket :", error);
     }
   };
 
-  // Fonction pour supprimer un ticket
-  const deleteTicket = (columnId, ticketId) => {
-    setColumns({
-      ...columns,
-      [columnId]: {
-        ...columns[columnId],
-        items: columns[columnId].items.filter((item) => item.id !== ticketId),
-      },
-    });
+  // Supprimer un ticket
+  const deleteTicket = async (columnId, ticketId) => {
+    try {
+      await deleteDoc(doc(db, "kanban", ticketId));
+      setColumns((prevColumns) => ({
+        ...prevColumns,
+        [columnId]: {
+          ...prevColumns[columnId],
+          items: prevColumns[columnId].items.filter(
+            (item) => item.id !== ticketId
+          ),
+        },
+      }));
+      console.log("Ticket supprimé :", ticketId);
+    } catch (error) {
+      console.error("Erreur lors de la suppression du ticket :", error);
+      alert("Une erreur est survenue lors de la suppression du ticket.");
+    }
   };
 
-  // Gestion du drag-and-drop
-  const onDragEnd = (result) => {
+  // Gérer le drag-and-drop
+  const onDragEnd = async (result) => {
     const { source, destination } = result;
 
-    // Si l'utilisateur a lâché l'élément hors d'une destination valide
     if (!destination) return;
 
     const sourceColumn = columns[source.droppableId];
@@ -58,18 +146,27 @@ const KanbanPage = () => {
 
     destColumn.items.splice(destination.index, 0, movedItem);
 
-    setColumns({
-      ...columns,
+    setColumns((prevColumns) => ({
+      ...prevColumns,
       [source.droppableId]: sourceColumn,
       [destination.droppableId]: destColumn,
-    });
+    }));
+
+    try {
+      await updateDoc(doc(db, "kanban", movedItem.id), {
+        status: destination.droppableId,
+      });
+      console.log("Statut du ticket mis à jour :", movedItem.id);
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du statut du ticket :", error);
+      alert("Une erreur est survenue lors de la mise à jour du ticket.");
+    }
   };
 
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Kanban Board</h2>
 
-      {/* Input pour ajouter un ticket */}
       <div className="mb-4">
         <input
           type="text"
@@ -83,7 +180,6 @@ const KanbanPage = () => {
         </button>
       </div>
 
-      {/* Gestion des colonnes */}
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="flex space-x-4">
           {Object.entries(columns).map(([columnId, column]) => (

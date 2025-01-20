@@ -17,10 +17,10 @@ const LoginPage = () => {
   
         // Crée une entrée utilisateur dans Firestore
         await setDoc(doc(db, 'users', user.uid), {
-          email: user.email,
-          kanban: [],
-          calendar: [],
-        });
+            email: user.email,
+            role: 'client', // ou 'superAdmin' si nécessaire
+            projectId: user.uid, // Chaque utilisateur a son propre projectId unique
+          });            
   
         alert('Registration successful!');
       } else {

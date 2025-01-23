@@ -43,23 +43,26 @@ const App = () => {
         try {
           const userQuery = query(
             collection(db, 'users'),
-            where('id', '==', currentUser.uid)
+            where('email', '==', currentUser.email) // Correction ici
           );
           const userSnapshot = await getDocs(userQuery);
           if (!userSnapshot.empty) {
             const userData = userSnapshot.docs[0].data();
             setUserRole(userData.role);
+          } else {
+            console.error('Utilisateur introuvable dans Firestore.');
           }
         } catch (error) {
-          console.error('Error fetching user role:', error);
+          console.error('Erreur lors de la récupération des données utilisateur :', error.message);
         }
       } else {
-        setUserRole(null); // Réinitialise le rôle si l'utilisateur se déconnecte
+        setUserRole(null);
       }
     });
-
-    return () => unsubscribe(); // Nettoie l'abonnement à l'état d'authentification
+  
+    return () => unsubscribe();
   }, []);
+  
 
   return (
     <Router>

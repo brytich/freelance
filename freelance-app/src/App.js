@@ -69,19 +69,24 @@ const App = () => {
       {/* Affiche la barre de navigation uniquement si l'utilisateur est connecté */}
       {user && <Navbar userRole={userRole} />}
       <Routes>
-        {!user ? (
-          // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
-          <Route path="*" element={<LoginPage />} />
-        ) : (
-          // Charge les routes principales si l'utilisateur est connecté
-          <>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/kanban" element={<KanbanPage userRole={userRole} />} />
-            <Route path="/payment" element={<PaymentPage />} />
-          </>
-        )}
-      </Routes>
+  {/* Route accessible même sans connexion */}
+  <Route path="/calendar" element={<CalendarPage />} />
+  
+  {!user ? (
+    <>
+      {/* Page de connexion pour les utilisateurs non connectés */}
+      <Route path="*" element={<LoginPage />} />
+    </>
+  ) : (
+    <>
+      {/* Routes pour les utilisateurs connectés */}
+      <Route path="/" element={<HomePage />} />
+      <Route path="/kanban" element={<KanbanPage userRole={userRole} />} />
+      <Route path="/payment" element={<PaymentPage />} />
+    </>
+  )}
+</Routes>
+
     </Router>
   );
 };

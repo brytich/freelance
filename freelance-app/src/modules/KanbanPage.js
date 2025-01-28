@@ -10,6 +10,7 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
+import '../css/kanbanStyle/kanban.css'
 
 const KanbanPage = () => {
   const [columns, setColumns] = useState({
@@ -127,13 +128,13 @@ const KanbanPage = () => {
   };
 
   return (
-<div className="flex flex-col items-center justify-center bg-[#1e293b] min-h-screen text-white">
-  <h2 className="text-3xl font-bold mb-6">Kanban Board</h2>
+<div className="kanban-container">
+  <h2 className="kanban-title">Tableau de bord</h2>
 
   {/* Tableau Kanban global */}
-  <div className="bg-[#24334a] p-6 rounded-xl shadow-lg w-full max-w-7xl">
+  <div className="kanban-board">
     {/* Formulaire d'ajout de ticket */}
-    <div className="mb-8 flex items-center space-x-4 w-full">
+    <div className="kanban-form">
       <input
         type="text"
         value={newTicket.title}
@@ -141,7 +142,7 @@ const KanbanPage = () => {
           setNewTicket((prev) => ({ ...prev, title: e.target.value }))
         }
         placeholder="Titre"
-        className="bg-gray-800 text-white border-none p-3 rounded w-1/4"
+        className="kanban-input"
       />
       <input
         type="text"
@@ -150,30 +151,28 @@ const KanbanPage = () => {
           setNewTicket((prev) => ({ ...prev, description: e.target.value }))
         }
         placeholder="Description"
-        className="bg-gray-800 text-white border-none p-3 rounded w-1/3"
+        className="kanban-input"
       />
-      <button
-        onClick={addTicket}
-        className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded"
-      >
+      <button onClick={addTicket} className="kanban-add-btn">
         Ajouter
       </button>
     </div>
 
     {/* Colonnes Kanban */}
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex space-x-6">
+      <div className="kanban-columns">
         {Object.entries(columns).map(([columnId, column]) => (
           <Droppable key={columnId} droppableId={columnId}>
             {(provided) => (
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="bg-gray-900 p-4 rounded-lg w-1/3 shadow-lg"
+                className="kanban-column"
               >
-                <h3 className="font-bold text-xl mb-4 flex justify-between items-center">
+                <h3 className="kanban-column-title">
                   {column.name} <span>({column.items.length})</span>
                 </h3>
+
                 {column.items.map((item, index) => (
                   <Draggable key={item.id} draggableId={item.id} index={index}>
                     {(provided) => (
@@ -181,23 +180,23 @@ const KanbanPage = () => {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className="bg-gray-800 p-4 mb-4 shadow-md rounded hover:bg-gray-700 transition"
+                        className="kanban-ticket"
                       >
-                        <h4 className="font-bold text-lg">{item.title}</h4>
-                        <p className="text-sm">{item.description}</p>
-                        <p className="text-xs text-gray-400">
+                        <h4 className="kanban-ticket-title">{item.title}</h4>
+                        <p className="kanban-ticket-description">{item.description}</p>
+                        <p className="kanban-ticket-date">
                           Ajouté : {item.date}
                         </p>
-                        <div className="flex justify-end mt-2 space-x-2">
+                        <div className="kanban-buttons">
                           <button
                             onClick={() => alert("Edit feature à implémenter")}
-                            className="text-blue-500 hover:text-blue-400"
+                            className="kanban-edit-btn"
                           >
                             ✎
                           </button>
                           <button
                             onClick={() => deleteTicket(columnId, item.id)}
-                            className="text-red-500 hover:text-red-400"
+                            className="kanban-delete-btn"
                           >
                             ✕
                           </button>
@@ -215,6 +214,7 @@ const KanbanPage = () => {
     </DragDropContext>
   </div>
 </div>
+
 
 
   );

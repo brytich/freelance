@@ -1,0 +1,97 @@
+:root {
+    --navbar-bg: linear-gradient(135deg, #1e3a8a, #2563eb);
+    --text-color: white;
+    --hover-bg: rgba(255, 255, 255, 0.2);
+    --active-bg: rgba(255, 255, 255, 0.3);
+    --logout-bg: #ef4444;
+    --logout-hover: #dc2626;
+    --transition-speed: 0.3s;
+}
+
+.navbar {
+    background: var(--navbar-bg);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    overflow: hidden;
+}
+
+/* 🔹 Conteneur des liens */
+.navbar ul {
+    display: flex;
+    list-style: none;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+}
+
+/* 🔹 Éléments de la navbar */
+.navbar ul li {
+    position: relative;
+    flex-grow: 1;
+    text-align: center;
+}
+
+/* 🔹 Liens de navigation */
+.navbar ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    padding: 14px 20px;
+    transition: all var(--transition-speed) ease-in-out;
+    position: relative;
+    border-radius: 8px;
+}
+
+/* 🟡 Effet hover (remplissage en douceur) */
+.navbar ul li a:hover {
+    background: var(--hover-bg);
+}
+
+/* 🟡 Correction du bug d'affichage sur l'élément actif */
+.navbar ul li.active a {
+    background: var(--active-bg);
+    border-radius: 8px;
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+/* 🎭 Effet rideau fluide */
+.navbar ul li a::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--hover-bg);
+    border-radius: 8px;
+    top: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-speed) ease-in-out;
+}
+
+.navbar ul li a:hover::before {
+    transform: scaleX(1);
+}
+
+/* 🔴 Bouton Logout */
+.logout-btn {
+    background: var(--logout-bg);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.logout-btn:hover {
+    background: var(--logout-hover);
+    transform: scale(1.1);
+}

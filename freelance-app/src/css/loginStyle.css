@@ -1,0 +1,154 @@
+:root {
+    --background: #0f172a;
+    --card-bg: #1e293b;
+    --border-color: #475569;
+    --text-color: white;
+    --input-bg: #334155;
+    --input-border: #475569;
+    --button-bg: #2563eb;
+    --button-hover: #3b82f6;
+    --alt-button-bg: #16a34a;
+    --alt-button-hover: #15803d;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --transition-speed: 0.3s;
+}
+
+/* 🌌 Fond général */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+    color: var(--text-color);
+}
+
+/* 🛠️ Boîte du formulaire */
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 8px 24px var(--shadow);
+    transition: all var(--transition-speed) ease-in-out;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+/* ✨ Animation d'apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 🎯 Titre */
+.login-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+/* 📌 Sous-titre */
+.login-subtitle {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--border-color);
+    margin-bottom: 16px;
+}
+
+/* 📋 Labels */
+.login-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: var(--text-color);
+}
+
+/* 📝 Champs de saisie */
+.login-input {
+    width: 100%;
+    background-color: var(--input-bg);
+    border: 2px solid var(--input-border);
+    border-radius: 8px;
+    padding: 10px;
+    color: var(--text-color);
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: var(--button-bg);
+    box-shadow: 0 0 8px var(--button-bg);
+}
+
+/* 🔘 Bouton de connexion */
+.login-button {
+    width: 100%;
+    background: var(--button-bg);
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.login-button:hover {
+    background: var(--button-hover);
+    box-shadow: 0px 4px 12px var(--button-hover);
+}
+
+/* 🔄 Lien d'inscription */
+.login-link {
+    color: var(--button-bg);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.login-link:hover {
+    color: var(--button-hover);
+}
+
+/* 📌 Ligne de séparation */
+.login-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    color: var(--border-color);
+    font-size: 0.9rem;
+}
+
+.login-divider::before,
+.login-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+    margin: 0 10px;
+}
+
+/* ✅ Bouton de connexion sans compte */
+.login-alt-button {
+    width: 100%;
+    background: var(--alt-button-bg);
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.login-alt-button:hover {
+    background: var(--alt-button-hover);
+    box-shadow: 0px 4px 12px var(--alt-button-hover);
+}

@@ -1,9 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { auth } from '../App';
 import { signOut } from 'firebase/auth';
+import '../css/navbar.css';
 
-const Navbar = ({ userRole }) => {
+const Navbar = () => {
+  const location = useLocation();
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -14,18 +17,24 @@ const Navbar = ({ userRole }) => {
   };
 
   return (
-    <nav className="bg-blue-500 p-4">
-      <ul className="flex justify-around">
-        <li><Link to="/" className="text-white">Home</Link></li>
-        <li><Link to="/calendar" className="text-white">Calendar</Link></li>
-        <li><Link to="/kanban" className="text-white">Kanban</Link></li>
-        <li><Link to="/payment" className="text-white">Payment</Link></li>
-        <li>
-          <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2">
-            Logout
-          </button>
+    <nav className="navbar">
+      <ul>
+        <li className={location.pathname === "/" ? "active" : ""}>
+          <Link to="/">Accueil</Link>
+        </li>
+        <li className={location.pathname === "/calendar" ? "active" : ""}>
+          <Link to="/calendar">Calendrier</Link>
+        </li>
+        <li className={location.pathname === "/kanban" ? "active" : ""}>
+          <Link to="/kanban">Tableau de Bord</Link>
+        </li>
+        <li className={location.pathname === "/payment" ? "active" : ""}>
+          <Link to="/payment">Paiement</Link>
         </li>
       </ul>
+      <button onClick={handleLogout} className="logout-btn">
+        Deconnexion
+      </button>
     </nav>
   );
 };

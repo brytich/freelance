@@ -54,7 +54,7 @@
     width: 100%;
 }
 
-/* 🎯 Inputs */
+/* 🎯 Champs d'entrée */
 .kanban-input {
     background-color: var(--column-bg);
     color: var(--text-color);
@@ -63,6 +63,7 @@
     border-radius: 8px;
     width: 30%;
     transition: all 0.3s ease-in-out;
+    font-size: 1rem;
 }
 
 .kanban-input:focus {
@@ -71,16 +72,16 @@
     box-shadow: 0 0 8px var(--shadow);
 }
 
-/* 🎯 Bouton Ajouter */
+/* ✅ Bouton Ajouter */
 .kanban-add-btn {
     background-color: var(--selected-bg);
-    padding: 12px;
+    padding: 12px 20px;
     border-radius: 8px;
     color: white;
     font-weight: bold;
-    transition: all 0.3s ease-in-out;
     cursor: pointer;
     box-shadow: 0px 4px 10px var(--shadow);
+    border: none;
 }
 
 .kanban-add-btn:hover {
@@ -88,6 +89,44 @@
     box-shadow: 0px 4px 12px var(--shadow);
     transform: scale(1.05);
 }
+
+.kanban-select {
+    width: auto; /* Ajuste la largeur en fonction du contenu */
+    flex: 1; /* Permet de s'adapter au reste du formulaire */
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #2D3748;
+    background-color: #1a253b;
+    color: #E2E8F0;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .kanban-select:hover {
+    border-color: #64748b;
+  }
+  
+  .kanban-select:focus {
+    outline: none;
+    border-color: #64748b;
+    box-shadow: 0 0 5px rgba(99, 179, 237, 0.5);
+  }
+  
+  .kanban-form {
+    display: flex;
+    gap: 10px; /* Ajoute un espace uniforme entre les champs */
+  }
+  
+  .kanban-form input,
+  .kanban-select {
+    flex: 1; /* Assure que tous les champs prennent la même largeur */
+    min-width: 200px; /* Empêche les champs de devenir trop petits */
+  }
+  
+  
+
 
 /* ======================= 📌 Colonnes Kanban ======================= */
 .kanban-columns {

@@ -1,132 +1,81 @@
-import React, { useState } from 'react';
-import Card, { CardContent } from '../composants/ui/Card';
-import { motion } from 'framer-motion';
-import {
-  FaCogs,
-  FaNodeJs,
-  FaReact,
-  FaDocker,
-  FaJenkins,
-  FaGitAlt,
-  FaCode,
-  FaFileCode,
-} from 'react-icons/fa';
-import { SiCypress, SiPostgresql, SiMongodb, SiJira } from 'react-icons/si';
-
-
-
-const skills = [
-  { name: 'Cypress', icon: <SiCypress size={30} /> },
-  { name: 'Playwright', icon: <FaCode size={30} /> }, // Icône alternative pour Playwright
-  { name: 'JavaScript', icon: <FaCogs size={30} /> },
-  { name: 'React', icon: <FaReact size={30} /> },
-  { name: 'Node.js', icon: <FaNodeJs size={30} /> },
-  { name: 'PostgreSQL', icon: <SiPostgresql size={30} /> },
-  { name: 'MongoDB', icon: <SiMongodb size={30} /> },
-  { name: 'Git', icon: <FaGitAlt size={30} /> },
-  { name: 'Docker', icon: <FaDocker size={30} /> },
-  { name: 'Jenkins', icon: <FaJenkins size={30} /> },
-  { name: 'Gherkin', icon: <FaFileCode size={30} /> }, // Icône alternative pour Gherkin
-  { name: 'Jira', icon: <SiJira size={30} /> },
-];
-
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import "../css/homeStyle.css";
+import { FaExternalLinkAlt, FaTimes } from "react-icons/fa";
 
 const experiences = [
   {
-    title: 'QA Automation Engineer',
-    company: 'Stormshield',
-    period: 'July 2023 - Present',
+    title: "Ingénieur QA Automatisation",
+    company: "Stormshield",
+    period: "Juillet 2023 - Aujourd'hui",
     description:
-      'Developed and implemented test strategies and automation scripts using Cypress. Integrated Gherkin scenarios into Cypress for efficient testing.',
+      "Développement de stratégies de test et automatisation via Cypress. Gestion du backlog via Jira.",
+    details:
+      "En tant qu'ingénieur QA chez Stormshield, je suis responsable de la mise en place des stratégies de test et de l'automatisation des tests en utilisant Cypress. J'intègre des scénarios Gherkin pour assurer la conformité aux exigences, et je gère les tâches via Jira pour optimiser les workflows.",
+    image: "/images/qa-engineer.jpg",
   },
   {
-    title: 'Consultant QA Logiciels',
-    company: 'TTC Testing',
-    period: 'Oct. 2022 - July 2023',
+    title: "Consultant QA Logiciels",
+    company: "TTC Testing",
+    period: "Oct. 2022 - Juil. 2023",
     description:
-      'Contributed to CI/CD pipelines with Jenkins and GitLab, ensuring software quality with automated tests in Cypress and Playwright.',
-  },
-  {
-    title: 'Front-End Developer',
-    company: 'NextRoad Engineering',
-    period: 'May 2022 - Aug. 2022',
-    description:
-      'Enhanced application features using Vue.js and Vuetify, fixed bugs, and reviewed code for performance improvements.',
+      "Automatisation des tests Cypress & Playwright. Mise en place CI/CD (Jenkins, GitLab).",
+    details:
+      "En tant que consultant QA, j'ai travaillé sur des projets d'automatisation en utilisant Cypress et Playwright. J'ai mis en place des pipelines CI/CD sur Jenkins et GitLab pour assurer une intégration continue fluide.",
+    image: "/images/qa-consultant.jpg",
   },
 ];
 
 const HomePage = () => {
   const [selectedExperience, setSelectedExperience] = useState(null);
 
-  const toggleExperience = (index) => {
-    setSelectedExperience(selectedExperience === index ? null : index);
-  };
-
   return (
-    <div className="p-6 text-white bg-gray-900 min-h-screen">
-      <header className="text-center mb-12">
-        <h1 className="text-4xl font-bold">Bryan Cat - QA Automation Engineer</h1>
-        <p className="text-xl mt-4">Specializing in Cypress, Playwright, and QA Solutions</p>
-      </header>
+    <div className="homepage-container">
+<header className="header">
+  <h1 className="title">Bryan CATICHE - QA Automation Engineer</h1>
+  <p className="subtitle">Spécialiste en Cypress, Playwright et Automatisation QA</p>
+</header>
 
-      <section className="mb-12">
-        <h2 className="text-3xl font-bold mb-6">My Skills</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-          {skills.map((skill, index) => (
-            <Card key={index} className="bg-gray-800 flex items-center justify-center">
-              <CardContent>
-                <div className="text-center">
-                  {skill.icon}
-                  <p className="mt-2 font-semibold">{skill.name}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
 
-      <section>
-        <h2 className="text-3xl font-bold mb-6">Experience</h2>
-        <div className="space-y-6">
-          {experiences.map((experience, index) => (
-            <Card
+      <section className="experience-section">
+        <h2 className="section-title">Expérience</h2>
+        <div className="experience-grid">
+          {experiences.map((exp, index) => (
+            <motion.div
               key={index}
-              className="bg-gray-800 cursor-pointer"
-              onClick={() => toggleExperience(index)}
+              className="experience-card"
+              whileHover={{ scale: 1.05 }}
             >
-              <CardContent>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h3 className="text-xl font-bold">{experience.title}</h3>
-                    <p className="text-sm text-gray-400">
-                      {experience.company} | {experience.period}
-                    </p>
-                  </div>
-                  <motion.div
-                    animate={{ rotate: selectedExperience === index ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    ▼
-                  </motion.div>
-                </div>
-                {selectedExperience === index && (
-                  <motion.div
-                    initial={{ height: 0 }}
-                    animate={{ height: 'auto' }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden mt-4"
-                  >
-                    <p>{experience.description}</p>
-                  </motion.div>
-                )}
-              </CardContent>
-            </Card>
+              <img src={exp.image} alt={exp.title} className="experience-img" />
+              <div className="experience-content">
+                <h3>{exp.title}</h3>
+                <p className="company">{exp.company} | {exp.period}</p>
+                <p className="description">{exp.description}</p>
+                <button className="read-more-btn" onClick={() => setSelectedExperience(exp)}>
+                  Lire plus <FaExternalLinkAlt size={12} />
+                </button>
+              </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
-      <footer className="text-center mt-12">
-        <p>&copy; 2025 Bryan Cat - All Rights Reserved</p>
+      {selectedExperience && (
+        <div className="modal-overlay" onClick={() => setSelectedExperience(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setSelectedExperience(null)}>
+              <FaTimes />
+            </button>
+            <img src={selectedExperience.image} alt={selectedExperience.title} className="modal-img" />
+            <h2>{selectedExperience.title}</h2>
+            <p className="company">{selectedExperience.company} | {selectedExperience.period}</p>
+            <p className="details">{selectedExperience.details}</p>
+          </div>
+        </div>
+      )}
+
+      <footer className="footer">
+        <p>© 2025 Bryan Cat - Tous droits réservés</p>
       </footer>
     </div>
   );

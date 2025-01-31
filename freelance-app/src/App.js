@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 // Import des modules
 import HomePage from './modules/HomePage';
@@ -34,59 +34,57 @@ export const db = getFirestore(app);
 const App = () => {
   const [user, setUser] = useState(null); // État pour l'utilisateur connecté
   const [userRole, setUserRole] = useState(null); // État pour le rôle utilisateur
+  const [loading, setLoading] = useState(true); // Ajout d'un état de chargement pour éviter les écrans blancs
 
-  // Écoute des changements d'état d'authentification
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
       if (currentUser) {
+        setUser(currentUser);
+
         try {
-          const userQuery = query(
-            collection(db, 'users'),
-            where('email', '==', currentUser.email) // Correction ici
-          );
-          const userSnapshot = await getDocs(userQuery);
-          if (!userSnapshot.empty) {
-            const userData = userSnapshot.docs[0].data();
+          const userDocRef = doc(db, "users", currentUser.uid);
+          const userSnapshot = await getDoc(userDocRef);
+
+          if (userSnapshot.exists()) {
+            const userData = userSnapshot.data();
             setUserRole(userData.role);
+            console.log("🔥 Rôle récupéré :", userData.role);
           } else {
-            console.error('Utilisateur introuvable dans Firestore.');
+            console.error("❌ Utilisateur introuvable dans Firestore.");
+            setUserRole("client");
           }
         } catch (error) {
-          console.error('Erreur lors de la récupération des données utilisateur :', error.message);
+          console.error("❌ Erreur lors de la récupération des données utilisateur :", error);
         }
       } else {
+        setUser(null);
         setUserRole(null);
       }
+      setLoading(false);
     });
-  
+
     return () => unsubscribe();
   }, []);
-  
+
+  if (loading) {
+    return <div className="loading-screen">Chargement...</div>;
+  }
 
   return (
     <Router>
-      {/* Affiche la barre de navigation uniquement si l'utilisateur est connecté */}
       {user && <Navbar userRole={userRole} />}
       <Routes>
-  {/* Route accessible même sans connexion */}
-  <Route path="/calendar" element={<CalendarPage />} />
-  
-  {!user ? (
-    <>
-      {/* Page de connexion pour les utilisateurs non connectés */}
-      <Route path="*" element={<LoginPage />} />
-    </>
-  ) : (
-    <>
-      {/* Routes pour les utilisateurs connectés */}
-      <Route path="/" element={<HomePage />} />
-      <Route path="/kanban" element={<KanbanPage userRole={userRole} />} />
-      <Route path="/payment" element={<PaymentPage />} />
-    </>
-  )}
-</Routes>
-
+        <Route path="/calendar" element={<CalendarPage />} />
+        {!user ? (
+          <Route path="*" element={<LoginPage />} />
+        ) : (
+          <>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/kanban" element={<KanbanPage userRole={userRole} />} />
+            <Route path="/payment" element={<PaymentPage />} />
+          </>
+        )}
+      </Routes>
     </Router>
   );
 };

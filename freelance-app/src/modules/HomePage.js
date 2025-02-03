@@ -12,7 +12,6 @@ const experiences = [
       "Développement de stratégies de test et automatisation via Cypress. Gestion du backlog via Jira.",
     details:
       "En tant qu'ingénieur QA chez Stormshield, je suis responsable de la mise en place des stratégies de test et de l'automatisation des tests en utilisant Cypress. J'intègre des scénarios Gherkin pour assurer la conformité aux exigences, et je gère les tâches via Jira pour optimiser les workflows.",
-    image: "/images/qa-engineer.jpg",
   },
   {
     title: "Consultant QA Logiciels",
@@ -22,7 +21,6 @@ const experiences = [
       "Automatisation des tests Cypress & Playwright. Mise en place CI/CD (Jenkins, GitLab).",
     details:
       "En tant que consultant QA, j'ai travaillé sur des projets d'automatisation en utilisant Cypress et Playwright. J'ai mis en place des pipelines CI/CD sur Jenkins et GitLab pour assurer une intégration continue fluide.",
-    image: "/images/qa-consultant.jpg",
   },
   {
     title: "Développeur Front-End",
@@ -32,7 +30,6 @@ const experiences = [
       "Ajout de nouvelles fonctionnalités en Vue.js et Vuetify. Optimisation des performances.",
     details:
       "Durant cette mission, j'ai été chargé d'ajouter de nouvelles fonctionnalités dans une application Vue.js et Vuetify. J'ai aussi optimisé les performances et corrigé divers bugs pour améliorer la stabilité de l'application.",
-    image: "/images/frontend-dev.jpg",
   },
   {
     title: "Développeur JavaScript",
@@ -42,7 +39,6 @@ const experiences = [
       "Développement et correction de bugs en Vue.js, gestion MongoDB et requêtes SQL.",
     details:
       "Pendant cette mission, j'étais chargé de maintenir et d'améliorer une application en Vue.js, en corrigeant des bugs et en optimisant les requêtes API. J'ai aussi géré l'intégration de MongoDB pour améliorer la gestion des données.",
-    image: "/images/javascript-dev.jpg",
   },
   {
     title: "Développeur HTML/CSS/JavaScript et Testeur QA",
@@ -52,7 +48,6 @@ const experiences = [
       "Développement de sites vitrine et mise en place de tests automatisés en Cypress.",
     details:
       "J'ai conçu et développé plusieurs sites vitrine en HTML/CSS/JavaScript, tout en intégrant des tests automatisés en Cypress pour garantir leur bon fonctionnement. J'ai également travaillé sur la gestion du backlog et la création de tickets Jira.",
-    image: "/images/qa-tester.jpg",
   },
   {
     title: "Développeur Junior",
@@ -62,7 +57,6 @@ const experiences = [
       "Résolution de problèmes et développement de tests automatisés en Jest et Postman.",
     details:
       "Lors de ce premier rôle en tant que développeur, j'ai contribué à la maintenance et au refactoring de code en ReactJS, et j'ai mis en place des tests automatisés en Jest et Postman pour améliorer la fiabilité du projet.",
-    image: "/images/junior-dev.jpg",
   },
 ];
 

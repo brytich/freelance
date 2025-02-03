@@ -11,6 +11,7 @@ const credentials = JSON.parse(fs.readFileSync("credentials.json"));
 const { client_secret, client_id, redirect_uris } = credentials.installed;
 const auth = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
 
+
 try {
     auth.setCredentials(JSON.parse(fs.readFileSync("token.json")));
     console.log("🔑 Token chargé avec les permissions :", auth.credentials.scope);
@@ -52,29 +53,43 @@ function saveProcessedEmails() {
 // Charger au démarrage
 loadProcessedEmails();
 
-async function eventExists(clientEmail, date, heure) {
+/**
+ * ✅ Marquer un email comme lu
+ */
+async function markEmailAsRead(emailId) {
     try {
-        const startDateTime = new Date(`${date}T${heure}:00`).toISOString();
-        const endDateTime = new Date(new Date(startDateTime).getTime() + 60 * 60 * 1000).toISOString();
+        // Vérifie les labels AVANT la modification
+        const before = await gmail.users.messages.get({ userId: "me", id: emailId });
+        console.log(`📩 Labels avant :`, before.data.labelIds);
 
-        const res = await calendar.events.list({
-            calendarId: "primary",
-            timeMin: startDateTime,
-            timeMax: endDateTime,
-            maxResults: 1,
-            singleEvents: true
+        // Marquer comme lu
+        const response = await gmail.users.messages.modify({
+            userId: "me",
+            id: emailId,
+            removeLabelIds: ["UNREAD"]
         });
+        console.log(`✅ Gmail a bien reçu la modification :`, response.data);
 
-        return res.data.items.some(event => event.attendees?.some(attendee => attendee.email === clientEmail));
+        // Vérifie les labels APRÈS la modification
+        const after = await gmail.users.messages.get({ userId: "me", id: emailId });
+        console.log(`✅ Labels après :`, after.data.labelIds);
+        
     } catch (error) {
-        console.error("❌ Erreur lors de la vérification de l'événement :", error);
-        return false;
+        console.error("❌ Erreur lors du marquage de l'email comme lu :", error);
     }
 }
+
+
+
+/**
+ * ✅ Création d'un nouvel événement
+ */
 async function createCalendarEvent(date, heure, clientEmail) {
     try {
         const startDateTime = new Date(`${date}T${heure}:00`);
-        const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000); // Durée de 1h
+        const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);
+
+        console.log(`📅 Création d'un nouvel événement pour ${clientEmail} à ${date} ${heure}`);
 
         const event = {
             summary: "📌 Rendez-vous QA",
@@ -92,15 +107,15 @@ async function createCalendarEvent(date, heure, clientEmail) {
         });
 
         console.log("✅ Événement créé avec succès :", res.data.htmlLink);
-        return true;
+        return res.data.htmlLink; // Retourne le lien pour confirmer la création
     } catch (error) {
         console.error("❌ Erreur lors de la création de l'événement :", error);
-        return false;
+        return null;
     }
 }
 
 /**
- * ✅ Vérifier les emails non lus
+ * ✅ Vérifier les emails non lus et créer un événement
  */
 async function checkEmails() {
     try {
@@ -109,83 +124,43 @@ async function checkEmails() {
         const res = await gmail.users.messages.list({
             userId: "me",
             maxResults: 5,
-            labelIds: ["UNREAD"] // 🔹 Ne traiter que les emails non lus
+            labelIds: ["UNREAD"]
         });
 
         const messages = res.data.messages || [];
+        console.log(`📩 Nombre d'emails non lus récupérés : ${messages.length}`);
 
         for (let msg of messages) {
-            if (processedEmails.has(msg.id)) {
-                console.log(`🔄 Email ${msg.id} déjà traité, on ignore.`);
-                continue;
-            }
-
             const email = await gmail.users.messages.get({ userId: "me", id: msg.id });
             const subject = email.data.payload.headers.find(h => h.name === "Subject")?.value || "";
 
-            console.log(`📩 Email trouvé avec sujet: "${subject}"`);
+            console.log(`📩 Email détecté avec sujet: "${subject}"`);
 
             if (subject.toLowerCase().includes("rdv") || subject.toLowerCase().includes("rendez-vous")) {
                 console.log(`📩 Demande de RDV détectée !`);
-
                 const emailBody = extractBody(email.data.payload);
-                console.log("📜 Contenu brut de l'email :", emailBody);
 
-                if (!emailBody) {
-                    console.log("⚠️ Impossible d'extraire le contenu.");
-                    continue;
-                }
-
+                if (!emailBody) continue;
                 const { date, heure, clientEmail } = extractRdvDetails(emailBody);
-                console.log(`🔍 Extraction : Date: ${date}, Heure: ${heure}, Email: ${clientEmail}`);
+                if (!date || !heure || !clientEmail) continue;
 
-                if (date && heure && clientEmail) {
-                    console.log(`📅 Vérification de l'événement existant pour ${clientEmail} à ${date} ${heure}`);
+                console.log(`📅 Tentative de création d'un nouvel événement pour ${clientEmail} à ${date} ${heure}`);
 
-                    const existingEvent = await eventExists(clientEmail, date, heure);
-                    if (existingEvent) {
-                        console.log(`⚠️ L'événement existe déjà. Pas de nouvelle création.`);
-                        processedEmails.add(msg.id);
-                        saveProcessedEmails();
-                        await markEmailAsRead(msg.id);
-                        continue;
-                    }
+                const eventLink = await createCalendarEvent(date, heure, clientEmail);
 
-                    console.log(`📅 Création d'un nouvel événement.`);
-                    processedEmails.add(msg.id);  // Marquer comme traité avant création pour éviter les doublons en cas d'échec
+                if (eventLink) { 
+                    console.log(`✅ Invitation envoyée avec succès : ${eventLink}`);
+                    processedEmails.add(`${clientEmail}-${date}-${heure}`);
                     saveProcessedEmails();
-                    const eventCreated = await createCalendarEvent(date, heure, clientEmail);
-
-                    if (eventCreated) {
-                        await markEmailAsRead(msg.id);
-                    } else {
-                        console.log(`❌ Échec de création de l'événement. L'email ne sera pas marqué comme traité.`);
-                        processedEmails.delete(msg.id);  // Enlever de la liste des traités si l'événement a échoué
-                        saveProcessedEmails();
-                    }
-                } else {
-                    console.log("⚠️ Informations de RDV manquantes.");
+                    
+                    // ✅ Maintenant, on marque l'email comme lu
+                    await markEmailAsRead(msg.id);
                 }
+                
             }
         }
     } catch (error) {
         console.error("❌ Erreur lors de la récupération des emails :", error);
-    }
-}
-
-/**
- * ✅ Marquer l'email comme lu
- */
-async function markEmailAsRead(emailId) {
-    try {
-        await gmail.users.messages.modify({
-            userId: "me",
-            id: emailId,
-            removeLabelIds: ["UNREAD"]
-        });
-        console.log(`📩 Email marqué comme lu.`);
-    } catch (error) {
-        console.error("❌ Erreur lors du marquage de l'email comme lu :", error);
     }
 }
 
@@ -231,4 +206,4 @@ function extractRdvDetails(text) {
 }
 
 // ✅ Exécuter toutes les 10 secondes
-setInterval(checkEmails, 10000);
+setInterval(checkEmails, 300000);

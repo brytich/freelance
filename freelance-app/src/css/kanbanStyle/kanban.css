@@ -1,11 +1,11 @@
-/* ======================= 🎨 Nouvelle Palette Harmonisée ======================= */
+/* ========================== 🎨 PALETTE DE COULEURS ========================== */
 :root {
-    --background: #0f172a;  /* Fond général */
-    --header-bg: #1e293b;   /* Fond du board */
+    --background: #0f172a;  
+    --header-bg: #1e293b;   
     --border-color: #334155;
     --text-color: white;
-    --card-bg: #1e293b;     /* Fond des tickets */
-    --column-bg: #1a253b;   /* Fond des colonnes */
+    --card-bg: #1e293b;     
+    --column-bg: #1a253b;   
     --shadow: rgba(0, 0, 0, 0.3);
     --selected-bg: #2563eb;
     --hover-bg: #1e40af;
@@ -14,7 +14,7 @@
     --gradient-secondary: linear-gradient(135deg, #162033, #1e293b);
 }
 
-/* ======================= 🌙 Kanban Board ======================= */
+/* ========================== 🏷️ KANBAN GLOBAL ========================== */
 .kanban-container {
     background-color: var(--background);
     color: var(--text-color);
@@ -26,7 +26,7 @@
     padding: 20px;
 }
 
-/* 🏷️ Tableau Kanban */
+/* 📌 Tableau Kanban */
 .kanban-board {
     background-color: var(--header-bg);
     padding: 24px;
@@ -37,7 +37,7 @@
     transition: all 0.3s ease-in-out;
 }
 
-/* 🏷️ Titre */
+/* 🎯 Titre */
 .kanban-title {
     font-size: 2rem;
     font-weight: bold;
@@ -45,16 +45,51 @@
     text-align: center;
 }
 
-/* ======================= 📌 Formulaire d’ajout ======================= */
+/* ========================== 🏷️ BOUTONS DE FILTRE (Titre, Description) ========================== */
+.kanban-filters {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.kanban-filter-btn {
+    background-color: var(--column-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    min-width: 120px; /* 📌 Empêche le rétrécissement */
+    text-align: center;
+}
+
+.kanban-filter-btn:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--selected-bg);
+    transform: scale(1.05);
+}
+
+.kanban-filter-btn.active {
+    background-color: var(--selected-bg);
+    color: white;
+    border-color: var(--selected-bg);
+}
+
+/* ========================== 📝 FORMULAIRE D'AJOUT ========================== */
 .kanban-form {
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 20px;
     justify-content: center;
     width: 100%;
 }
 
-/* 🎯 Champs d'entrée */
+/* ✍️ Champs d'entrée */
 .kanban-input {
     background-color: var(--column-bg);
     color: var(--text-color);
@@ -90,49 +125,12 @@
     transform: scale(1.05);
 }
 
-.kanban-select {
-    width: auto; /* Ajuste la largeur en fonction du contenu */
-    flex: 1; /* Permet de s'adapter au reste du formulaire */
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #2D3748;
-    background-color: #1a253b;
-    color: #E2E8F0;
-    appearance: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .kanban-select:hover {
-    border-color: #64748b;
-  }
-  
-  .kanban-select:focus {
-    outline: none;
-    border-color: #64748b;
-    box-shadow: 0 0 5px rgba(99, 179, 237, 0.5);
-  }
-  
-  .kanban-form {
-    display: flex;
-    gap: 10px; /* Ajoute un espace uniforme entre les champs */
-  }
-  
-  .kanban-form input,
-  .kanban-select {
-    flex: 1; /* Assure que tous les champs prennent la même largeur */
-    min-width: 200px; /* Empêche les champs de devenir trop petits */
-  }
-  
-  
-
-
-/* ======================= 📌 Colonnes Kanban ======================= */
+/* ========================== 📌 COLONNES KANBAN ========================== */
 .kanban-columns {
     display: flex;
     gap: 20px;
     justify-content: space-between;
+    width: 100%;
 }
 
 /* 🏷️ Colonnes */
@@ -157,7 +155,7 @@
     justify-content: space-between;
 }
 
-/* ======================= 📌 Tickets ======================= */
+/* ========================== 🎟️ TICKETS ========================== */
 .kanban-ticket {
     background: var(--column-bg);
     padding: 14px;
@@ -180,7 +178,7 @@
     margin-top: 5px;
 }
 
-/* 🎯 Boutons */
+/* 🎯 Boutons d'actions */
 .kanban-buttons {
     display: flex;
     justify-content: flex-end;
@@ -208,7 +206,7 @@
     color: #f87171;
 }
 
-/* ======================= ✨ Animation ======================= */
+/* ========================== ✨ ANIMATIONS ========================== */
 .kanban-ticket {
     animation: fadeIn 0.3s ease-in-out;
 }
@@ -221,5 +219,42 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* ========================== 📱 RESPONSIVE (MODE MOBILE) ========================== */
+@media (max-width: 768px) {
+    .kanban-columns {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 10px;
+        width: 100%;
+        padding: 10px;
+        scroll-snap-type: x mandatory;
+    }
+
+    .kanban-column {
+        min-width: 280px;
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+    }
+
+    .kanban-column-title {
+        font-size: 1.1rem;
+    }
+}
+
+/* 📜 Mode Liste pour Écran Ultra Petit (< 500px) */
+@media (max-width: 500px) {
+    .kanban-columns {
+        flex-direction: column;
+        overflow-x: hidden;
+    }
+
+    .kanban-column {
+        width: 100%;
+        min-width: unset;
+        margin-bottom: 20px;
     }
 }

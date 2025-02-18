@@ -21,6 +21,7 @@
     justify-content: center;
     background-color: var(--background);
     color: var(--text-color);
+    padding: 20px; /* Ajout d’un padding pour éviter que le contenu colle au bord sur mobile */
 }
 
 /* 🛠️ Boîte du formulaire */
@@ -151,4 +152,49 @@
 .login-alt-button:hover {
     background: var(--alt-button-hover);
     box-shadow: 0px 4px 12px var(--alt-button-hover);
+}
+
+/* ======================= 🏆 MEDIA QUERIES ======================= */
+
+/* 🌍 Tablettes et écrans moyens (max-width: 768px) */
+@media (max-width: 768px) {
+    .login-box {
+        max-width: 90%;  /* Réduit la largeur max */
+        margin: 0 auto; /* Centre horizontalement */
+        padding: 20px;  /* Légère réduction du padding */
+    }
+
+    .login-title {
+        font-size: 1.6rem;
+    }
+    
+    .login-subtitle {
+        font-size: 0.85rem;
+    }
+}
+
+/* 📱 Petits mobiles (max-width: 480px) */
+@media (max-width: 480px) {
+    .login-box {
+        padding: 16px;
+    }
+
+    .login-title {
+        font-size: 1.4rem;
+    }
+
+    .login-subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 12px;
+    }
+
+    .login-input {
+        padding: 8px;
+    }
+
+    .login-button,
+    .login-alt-button {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
 }

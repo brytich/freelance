@@ -8,90 +8,104 @@
     --transition-speed: 0.3s;
 }
 
+/* 🟦 Navbar */
 .navbar {
     background: var(--navbar-bg);
     padding: 12px 20px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    position: relative;
+    justify-content: center;
+    gap: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
-    overflow: hidden;
 }
 
 /* 🔹 Conteneur des liens */
 .navbar ul {
     display: flex;
     list-style: none;
-    width: 100%;
-    justify-content: space-between;
     padding: 0;
     margin: 0;
+    gap: 10px;
 }
 
-/* 🔹 Éléments de la navbar */
+/* 🔹 Icônes et textes */
 .navbar ul li {
-    position: relative;
-    flex-grow: 1;
+    flex-grow: 0;
     text-align: center;
 }
 
-/* 🔹 Liens de navigation */
 .navbar ul li a {
     color: var(--text-color);
     text-decoration: none;
     font-size: 18px;
-    font-weight: bold;
-    display: block;
-    padding: 14px 20px;
+    padding: 8px 14px;
     transition: all var(--transition-speed) ease-in-out;
-    position: relative;
     border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* Espace entre l'icône et le texte */
+    width: auto;
+    min-width: 48px;
 }
 
-/* 🟡 Effet hover (remplissage en douceur) */
+/* Cache le texte par défaut */
+.navbar ul li a span {
+    display: none;
+}
+
+/* 🖥️ Sur PC, afficher l'icône + le texte */
+@media (min-width: 1024px) {
+    .navbar ul li a span {
+        display: inline;
+    }
+}
+
+/* 🟡 Effet hover */
 .navbar ul li a:hover {
     background: var(--hover-bg);
+    transform: scale(1.05);
 }
 
-/* 🟡 Correction du bug d'affichage sur l'élément actif */
+/* 🟡 Élément actif */
 .navbar ul li.active a {
     background: var(--active-bg);
     border-radius: 8px;
-    transition: all var(--transition-speed) ease-in-out;
-}
-
-/* 🎭 Effet rideau fluide */
-.navbar ul li a::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: var(--hover-bg);
-    border-radius: 8px;
-    top: 0;
-    left: 0;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--transition-speed) ease-in-out;
-}
-
-.navbar ul li a:hover::before {
-    transform: scaleX(1);
+    transform: scale(1.05);
 }
 
 /* 🔴 Bouton Logout */
 .logout-btn {
     background: var(--logout-bg);
     color: white;
-    padding: 10px 16px;
+    padding: 10px;
     border-radius: 8px;
-    font-weight: bold;
+    font-size: 18px;
     transition: all var(--transition-speed) ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 48px;
+    gap: 8px;
 }
 
-.logout-btn:hover {
-    background: var(--logout-hover);
-    transform: scale(1.1);
+/* Cache le texte du bouton Logout par défaut */
+.logout-btn span {
+    display: none;
+}
+
+/* 🖥️ Sur PC, afficher aussi le texte du bouton Logout */
+@media (min-width: 1024px) {
+    .logout-btn span {
+        display: inline;
+    }
+}
+
+/* 🟦 Effet de clic */
+.navbar ul li a:active,
+.logout-btn:active {
+    transform: scale(0.85);
+    transition: transform 0.1s ease-in-out;
 }

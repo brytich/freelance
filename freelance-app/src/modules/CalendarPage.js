@@ -110,13 +110,13 @@ const CalendarPage = () => {
   
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
 {/* Calendrier moderne centré et agrandi, adaptatif au mode dark/light */}
-<div className="flex justify-center lg:justify-start">
+<div className="calendar-container">
   <div className={`p-8 rounded-lg shadow-lg transition-all duration-300 ${darkMode ? 'bg-gray-900' : 'bg-gray-200'} w-full max-w-xl`}>
     <DatePicker
       selected={date}
       onChange={(date) => setDate(date)}
       className={`w-full p-4 text-lg rounded-lg shadow-md transition-all duration-300 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}
-      calendarClassName="w-full text-center p-6"
+      calendarClassName="react-datepicker"
       dateFormat="dd/MM/yyyy"
       minDate={new Date()} 
       inline

@@ -1,260 +1,133 @@
-/* ======================= ✅ RÈGLES DE BASE ======================= */
+.rdp-root {
+    --rdp-accent-color: indigo; /* Change the accent color to indigo. */
+    --rdp-accent-background-color: #da0000; /* Change the accent background color. */
+    /* Add more CSS variables here. */
+  }
 
-/* Empêche le dépassement horizontal global */
-body, html {
-    overflow-x: hidden;
+.calendar-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0f172a;
+    color: white;
+    transition: all 0.3s;
 }
 
-/* Conteneur principal du calendrier */
 .calendar-container {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #1e293b;
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+    width: 100%;
+    max-width: 400px;  /* 🔹 Réduction de la largeur */
+}
+
+/* 📆 Calendrier */
+.calendar-wrapper {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #334155;
+    max-width: 100%;  /* 🔹 Ajustement pour ne pas dépasser */
+}
+
+/* 📋 Formulaire */
+.calendar-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    max-width: 100%;
+    gap: 15px;
+    max-width: 500px;  /* 🔹 Réduction pour éviter le vide */
+    margin: 0 auto;
 }
 
-/* Ajustement de la largeur du calendrier */
-.react-datepicker {
-    max-width: 100%;
-    width: 100%;
-    /* ❗ Option: commente ou supprime min-width si tu veux 
-       permettre une largeur plus petite sur mobile
-       min-width: 280px;
-    */
-    border-radius: 12px;
-    box-sizing: border-box;
-    /* On veut voir les flèches même si elles débordent un peu */
-    overflow: visible;
+.form-group {
+    display: flex;
+    flex-direction: column;
 }
 
-/* ======================= 🌙 MODE SOMBRE ======================= */
-.dark-mode .react-datepicker {
-    background-color: #1e293b !important;
-    color: white !important;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.dark-mode .react-datepicker__header {
-    background-color: #334155 !important;
-    border-bottom: 1px solid #475569 !important;
-}
-
-.dark-mode .react-datepicker__day,
-.dark-mode .react-datepicker__day-name {
-    color: white !important;
-}
-
-.dark-mode .react-datepicker__day--selected {
-    background-color: #2563eb !important;
-    color: white !important;
+.form-group label {
     font-weight: bold;
-    box-shadow: 0 3px 8px rgba(37, 99, 235, 0.3);
-    transform: scale(1.05);
+    margin-bottom: 5px;
 }
 
-.dark-mode .react-datepicker__day:hover {
-    background-color: #1e40af !important;
-    color: white !important;
-    transform: scale(1.05);
-    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+.form-group select,
+.form-group input {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: #334155;
+    color: white;
 }
 
-/* ======================= 🌞 MODE CLAIR ======================= */
-.light-mode .react-datepicker {
-    background-color: white !important;
-    color: rgb(40, 40, 40) !important;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-}
-
-.light-mode .react-datepicker__header {
-    background-color: #f8fafc !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-}
-
-.light-mode .react-datepicker__day,
-.light-mode .react-datepicker__day-name {
-    color: #1e293b !important;
-}
-
-.light-mode .react-datepicker__day--selected {
-    background-color: #2563eb !important;
-    color: white !important;
-    font-weight: bold;
-    transform: scale(1.05);
-}
-
-.light-mode .react-datepicker__day:hover {
-    background-color: #3b82f6 !important;
-    color: white !important;
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
-}
-
-/* ======================= 📅 STRUCTURE ET STYLE GLOBAUX ======================= */
-.react-datepicker {
-    border: 1px solid #475569;
+.return-btn, .confirm-btn {
+    margin-top: 20px;
+    background-color: #2563eb;
+    color: white;
     padding: 12px;
-    transition: all 0.3s ease-in-out;
-    font-family: 'Poppins', sans-serif;
-}
-
-/* En-tête du calendrier : flex pour positionner le titre et les flèches */
-.react-datepicker__header {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;     /* Hauteur fixe à ajuster */
-    padding: 0 50px;  /* Espace pour les flèches en desktop */
-    border-radius: 10px 10px 0 0;
-}
-
-/* Titre du mois et de l'année */
-.react-datepicker__current-month {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #93c5fd;
-}
-
-/* ======================= 🗓️ SEMAINES EN GRID ======================= */
-.react-datepicker__week {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    justify-items: center;
-    align-items: center;
-    margin: 6px 0;
-}
-
-.react-datepicker__day-name {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #dbeafe;
-    margin-bottom: 4px;
-}
-
-.react-datepicker__day {
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: 8px;
     cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    width: 100%; /* 🔹 Ajustement pour une meilleure cohérence */
+}
+
+.return-btn:hover, .confirm-btn:hover {
+    background-color: #1e40af;
+}
+
+.message {
+    text-align: center;
+    font-weight: bold;
+    color: #22c55e;
+}
+
+/* ✅ Style du jour sélectionné */
+.rdp-day-selected {
+    background-color: white !important;
+    color: #1e293b !important;
+    font-weight: bold;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3) !important;
+    transform: scale(1.1);
     transition: all 0.2s ease-in-out;
 }
 
-/* Jours hors mois : partiellement visibles */
-.react-datepicker__day--outside-month {
+/* ✅ Jour actuel */
+.rdp-day-today {
+    border: 2px solid white !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+/* ✅ Désactiver les jours hors mois */
+.rdp-day-outside {
     opacity: 0.3;
     pointer-events: none;
 }
 
-/* ======================= 🔼 BOUTONS DE NAVIGATION ======================= */
-.react-datepicker__navigation {
-    width: 34px;
-    height: 34px;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease-in-out;
-    z-index: 2;
-}
-.react-datepicker__navigation:hover {
-    background-color: rgba(255, 255, 255, 0.3);
+/* ✅ Effet au survol */
+.rdp-day-hover:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
     transform: scale(1.05);
+    cursor: pointer;
 }
 
-/* Position du bouton "précédent" */
-.react-datepicker__navigation--previous {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+/* ✅ Focus (quand on utilise le clavier) */
+.rdp-day-focus:focus {
+    outline: 2px solid #93c5fd !important;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Position du bouton "suivant" */
-.react-datepicker__navigation--next {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+/* ✅ Flèches de navigation */
+.rdp-nav {
+    color: white !important;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
-/* ======================= ✨ ANIMATION ======================= */
-.react-datepicker__month {
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ======================= 📱 RESPONSIVE DESIGN ======================= */
-@media (max-width: 768px) {
-    .react-datepicker {
-        width: 100%;
-        max-width: 320px;
-        font-size: 0.9rem;
-    }
-
-    .react-datepicker__day {
-        width: 34px;
-        height: 34px;
-        line-height: 34px;
-    }
-
-    .react-datepicker__navigation {
-        width: 28px;
-        height: 28px;
-    }
-}
-
-@media (max-width: 480px) {
-    /* On resserre le padding du conteneur global */
-    .calendar-container {
-        padding: 10px; 
-    }
-
-    /* Autorise le calendrier à être encore plus étroit */
-    .react-datepicker {
-        /* Supprime min-width si nécessaire */
-        /* min-width: 280px; */
-        max-width: 260px; /* Ajuste comme tu le souhaites */
-    }
-
-    /* Réduire le padding du header (moins d’espace sur les côtés) */
-    .react-datepicker__header {
-        padding: 0 20px;
-    }
-
-    .react-datepicker__day {
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        font-size: 0.85rem;
-    }
-
-    /* Flèches plus rapprochées */
-    .react-datepicker__navigation--previous {
-        left: 5px;
-    }
-    .react-datepicker__navigation--next {
-        right: 5px;
-    }
+/* ✅ Effet au survol des flèches */
+.rdp-nav:hover {
+    color: #e2e8f0 !important;
+    transform: scale(1.1);
 }

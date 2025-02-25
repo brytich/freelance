@@ -4,6 +4,7 @@ import { collection, addDoc } from 'firebase/firestore';
 import { auth, db } from '../App';
 import { sendEmail } from '../composants/utils/sendEmail.js';
 import { DayPicker } from 'react-day-picker';
+import { fr } from 'date-fns/locale';
 import 'react-day-picker/style.css';
 import '../css/calendarStyle/calendar.css';
 
@@ -55,7 +56,7 @@ const CalendarPage = () => {
       await sendEmail({
         to: targetAdmin,
         subject: 'Nouvelle réservation',
-        body: `📅 Un rendez-vous a été créé par ${name}.\n
+        body: `Un rendez-vous a été créé par ${name}.\n
         🏷️ Service : ${service}\n
         📆 Date : ${newEvent.date}\n
         ⏰ Horaire : ${newEvent.timeSlot}\n
@@ -77,7 +78,7 @@ const CalendarPage = () => {
 
 
 
-        <h2 className="title">📅 Réserver un rendez-vous</h2>
+        <h2 className="title">Réserver un rendez-vous</h2>
 
         {!isAuthenticated && (
           <button className="return-btn" onClick={() => navigate('/')}>
@@ -93,8 +94,9 @@ const CalendarPage = () => {
               mode="single"
               selected={date}
               onSelect={setDate}
+              locale={fr}
               footer={
-                date ? `Date: ${date.toLocaleDateString()}` : "Pick a day."
+                date ? ` ${date.toLocaleDateString()}` : "Pick a day."
               }
               classNames={{
                 day_selected: "rdp-day-selected",  // 🔹 Applique notre style CSS

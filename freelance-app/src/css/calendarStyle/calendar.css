@@ -1,7 +1,5 @@
 .rdp-root {
-    --rdp-accent-color: indigo; /* Change the accent color to indigo. */
-    --rdp-accent-background-color: #da0000; /* Change the accent background color. */
-    /* Add more CSS variables here. */
+    --rdp-accent-color: rgb(255, 255, 255); /* Change the accent color to indigo. */
   }
 
 .calendar-page {

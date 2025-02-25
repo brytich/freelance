@@ -102,8 +102,6 @@ const HomePage = () => {
             <button className="close-btn" onClick={() => setSelectedExperience(null)}>
               <FaTimes />
             </button>
-            <img src={selectedExperience.image} alt={selectedExperience.title} className="modal-img" />
-            <h2>{selectedExperience.title}</h2>
             <p className="company">{selectedExperience.company} | {selectedExperience.period}</p>
             <p className="details">{selectedExperience.details}</p>
           </div>

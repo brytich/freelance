@@ -38,12 +38,12 @@ const Navbar = () => {
             <span>Tableau de Bord</span>
           </Link>
         </li>
-        <li className={location.pathname === "/payment" ? "active" : ""}>
+        {/*<li className={location.pathname === "/payment" ? "active" : ""}>
           <Link to="/payment">
             <FaMoneyBillWave />
             <span>Paiement</span>
           </Link>
-        </li>
+        </li>*/}
       </ul>
       <button onClick={handleLogout} className="logout-btn">
         <FaSignOutAlt />

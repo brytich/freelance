@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Card, CardMedia, CardContent, CardActions, Button, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import "../css/homeStyle.css";
 import { FaExternalLinkAlt, FaTimes } from "react-icons/fa";
@@ -83,14 +84,44 @@ const HomePage = () => {
               whileHover={{ scale: 1.05 }}
             >
               
-              <div className="experience-content">
-                <h3>{exp.title}</h3>
-                <p className="company">{exp.company} | {exp.period}</p>
-                <p className="description">{exp.description}</p>
-                <button className="read-more-btn" onClick={() => setSelectedExperience(exp)}>
-                  Lire plus <FaExternalLinkAlt size={12} />
-                </button>
-              </div>
+              <Card
+  sx={{
+    maxWidth: 345,
+    boxShadow: 6, // Meilleure ombre
+    borderRadius: 3, // Coins arrondis
+    backgroundColor: "var(--card-bg)", // Applique la couleur du fond
+    color: "var(--text-color)", // Applique la couleur du texte
+    padding: 2, // Ajoute un padding pour éviter que le contenu colle aux bords
+  }}
+  className="experience-card"
+>
+  {/* Image placeholder si exp.image est vide */}
+  {exp.image && (
+    <CardMedia
+      sx={{ height: 140 }}
+      image={exp.image}
+      title={exp.title}
+    />
+  )}
+
+  <CardContent>
+    <Typography gutterBottom variant="h5" component="div">
+      {exp.title}
+    </Typography>
+    <Typography className="company" variant="body2">
+      {exp.company} | {exp.period}
+    </Typography>
+    <Typography className="description" variant="body2">
+      {exp.description}
+    </Typography>
+  </CardContent>
+
+  <CardActions>
+    <Button size="small" sx={{ color: "var(--accent-color)" }} onClick={() => setSelectedExperience(exp)}>
+      Lire plus <FaExternalLinkAlt size={12} style={{ marginLeft: 5 }} />
+    </Button>
+  </CardActions>
+</Card>
             </motion.div>
           ))}
         </div>

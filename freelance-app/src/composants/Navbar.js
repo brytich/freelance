@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { auth } from '../App';
 import { signOut } from 'firebase/auth';
 import '../css/navbar.css';
-import { FaHome, FaCalendarAlt, FaTasks, FaMoneyBillWave, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaCalendarAlt, FaTasks, FaSignOutAlt } from 'react-icons/fa';
 
 const Navbar = () => {
   const location = useLocation();

@@ -78,7 +78,7 @@ const CalendarPage = () => {
 
 
 
-        <h2 className="title">Réserver un rendez-vous</h2>
+        <h2 className="title">Réserver un rendez vous</h2>
 
         {!isAuthenticated && (
           <button className="return-btn" onClick={() => navigate('/')}>

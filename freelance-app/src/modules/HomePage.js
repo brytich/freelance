@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, CardContent, Button, Typography, Dialog, DialogTitle, DialogContent, IconButton } from "@mui/material";
+import { Card, CardContent, Button, Typography, Dialog, DialogTitle, DialogContent, IconButton, CircularProgress, Box} from "@mui/material";
 import "../css/homeStyle.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -11,18 +11,18 @@ import 'swiper/css/navigation';
 
 
 const skills = [
-  "Cypress",
-  "Playwright",
-  "Gherkin",
-  "Jira",
-  "GitLab CI/CD",
-  "Jenkins",
-  "Vue.js",
-  "ReactJS",
-  "MongoDB",
-  "SQL",
-  "Jest",
-  "Postman"
+  { name: "Cypress", level: 95 },
+  { name: "Playwright", level: 85 },
+  { name: "Gherkin", level: 90 },
+  { name: "Jira", level: 80 },
+  { name: "GitLab CI/CD", level: 75 },
+  { name: "Jenkins", level: 70 },
+  { name: "Vue.js", level: 80 },
+  { name: "ReactJS", level: 75 },
+  { name: "MongoDB", level: 70 },
+  { name: "SQL", level: 65 },
+  { name: "Jest", level: 80 },
+  { name: "Postman", level: 75 },
 ];
 
 const experiences = [
@@ -142,7 +142,7 @@ const handleCloseSkills = () => setOpenSkillsModal(false);
   Voir mes compétences
 </Button>
 
-<Dialog open={openSkillsModal} onClose={handleCloseSkills} fullWidth maxWidth="sm">
+<Dialog open={openSkillsModal} onClose={handleCloseSkills} fullWidth maxWidth="md">
   <DialogTitle>
     Mes Compétences
     <IconButton
@@ -159,21 +159,58 @@ const handleCloseSkills = () => setOpenSkillsModal(false);
     </IconButton>
   </DialogTitle>
   <DialogContent dividers>
-    <div className="skills-container">
+    <Box
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: 4,
+        padding: 2,
+      }}
+    >
       {skills.map((skill, index) => (
-        <Typography
+        <Box
           key={index}
-          variant="body1"
           sx={{
-            padding: "8px 0",
-            borderBottom: "1px solid var(--border-color)",
-            color: "var(--text-color)"
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: 100,
           }}
         >
-          {skill}
-        </Typography>
+          <Box sx={{ position: "relative", display: "inline-flex" }}>
+            <CircularProgress
+              variant="determinate"
+              value={skill.level}
+              size={80}
+              thickness={5}
+              sx={{
+                color: skill.level > 80 ? "#22c55e" : skill.level > 50 ? "#facc15" : "#ef4444",
+              }}
+            />
+            <Box
+              sx={{
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                position: "absolute",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="caption" component="div" color="white">
+                {`${skill.level}%`}
+              </Typography>
+            </Box>
+          </Box>
+          <Typography variant="body2" sx={{ marginTop: 1, color: "var(--text-color)" }}>
+            {skill.name}
+          </Typography>
+        </Box>
       ))}
-    </div>
+    </Box>
   </DialogContent>
 </Dialog>
 

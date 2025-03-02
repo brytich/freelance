@@ -149,6 +149,77 @@
   color: #e2e8f0;
 }
 
+.details {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.MissionTitle {
+  color: #60a5fa;
+  font-weight: bold;
+  margin-top: 15px;
+  font-size: 1rem;
+}
+
+/* Style global du Dialog */
+.MuiDialog-paper {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  max-width: 800px !important; /* Ajuste selon ton besoin */
+  margin: auto;
+}
+
+/* Titre du Dialog */
+.MuiDialogTitle-root {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Contenu du Dialog */
+.MuiDialogContent-root {
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+/* Bouton de fermeture */
+.MuiDialogTitle-root .MuiIconButton-root {
+  color: var(--text-color) !important;
+}
+
+.experienceSwiper {
+  padding: 40px 0;
+  overflow: hidden;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide .MuiCard-root {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.swiper-slide-active .MuiCard-root {
+  background-color: #24344e !important; /* Un ton légèrement plus clair que var(--card-bg) */
+  color: var(--text-color) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+.swiper-slide-next .MuiCard-root,
+.swiper-slide-prev .MuiCard-root {
+  opacity: 0.7;
+}
+
 /* 🔴 Bouton Fermer */
 .close-btn {
   background: transparent;

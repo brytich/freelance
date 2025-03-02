@@ -6,6 +6,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@hello-pangea/dnd": "^18.0.1",
+    "@mui/icons-material": "^6.4.6",
     "@mui/material": "^6.4.6",
     "@shadcn/ui": "^0.0.4",
     "@stripe/react-stripe-js": "^3.1.1",
@@ -24,6 +25,7 @@
     "react-scripts": "5.0.1",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
+    "swiper": "^11.2.4",
     "web-vitals": "^4.2.4",
     "zustand": "^5.0.3"
   },
